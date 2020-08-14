@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Docker MySQL Node Sequelize React boilerplate project
 
 This is a boilerplate Docker project that:
@@ -30,3 +31,7 @@ If you change your Dockerfile and must rebuild the Node.js or React images, run:
 ```
 docker-compose up --build
 ```
+=======
+# microtwitter
+Minimal twitter clone with main features
+>>>>>>> 46cba75445b522becfe7a491c905032773842bd3

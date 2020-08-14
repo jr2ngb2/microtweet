@@ -3,7 +3,18 @@ const app = express();
 const cors = require("cors");
 const Sequelize = require("sequelize");
 const dbConfig = require("./config/config.json").development;
+const { ApolloServer } = require('apollo-server-express');
+const { graphqlHTTP  } = require('express-graphql');
+const graphql = require('graphql');
 const User = require("./models").User;
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
+const models = require("./models");
+
+
 
 connectToDatabase();
 
@@ -11,12 +22,40 @@ app.use(cors());
 app.get("/", async (req, res) => {
   try {
     const user = await User.findById(1);
-    const response = { message: `This response came from the node.js app. User ${user.username} is on the database.` };
+    const response = { message: `Th response came from the node.js app. User ${user.username} is on the database.` };
     res.send(response);
   } catch (error) {
     res.status(422).send(error);
   }
 });
+
+const server = new ApolloServer({typeDefs , resolvers , context : {models}});
+server.applyMiddleware({app});
+console.log("haha");
+// const QueryRoot = new graphql.GraphQLObjectType({
+//   name: 'Query',
+//   fields: () => ({
+//     hello: {
+//       type: graphql.GraphQLString,
+//       resolve: () => "Hello world!"
+//     }
+//   })
+// });
+// const schema = new graphql.GraphQLSchema({ query: QueryRoot });
+// app.use('/graphql', graphqlHTTP({
+//   schema: schema,
+//   graphiql: true,
+// }));
+//app.listen(4000);
+// const server = new ApolloServer({
+//     modules: [
+//         require('./GraphQL/tickets1'),
+//         require('./GraphQL/status1'),
+//         require('./GraphQL/users1'),
+//         require('./GraphQL/priorities1'),
+//     ],
+// });
+//server.applyMiddleware({ app });
 app.listen(5000, () => console.log("The node.js app is listening on port 5000."));
 
 function connectToDatabase() {
@@ -36,7 +75,7 @@ function connectToDatabase() {
     .authenticate()
     .then(() => {
       console.log("Connection has been established successfully.");
-
+      //console.log("haha");
       //Check if database was seeded already, and do it if needed
       User.findById(1).then(user => {
         if (!user) {
@@ -61,4 +100,5 @@ function connectToDatabase() {
     .catch(err => {
       console.log("Unable to connect to the database:", err);
     });
+ sequelize.sync();
 }

@@ -13,7 +13,6 @@ ENV PATH /opt/node_modules/.bin:$PATH
 WORKDIR /opt/app
 COPY . /opt/app
 
-RUN chmod +x ./wait-for.sh
-CMD sh -c './wait-for.sh mysql-db:3306 -- sequelize db:migrate && nodemon index.js'
+CMD ["npm", "start"]
 
 EXPOSE 5000
