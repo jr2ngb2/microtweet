@@ -22,4 +22,5 @@ If you change your Dockerfile and must rebuild the Node.js or React images, run:
 ```
 docker-compose up --build
 ```
+[![HitCount](http://hits.dwyl.com/jr2ngb2/microtweet.svg)](http://hits.dwyl.com/jr2ngb2/microtweet)
 
